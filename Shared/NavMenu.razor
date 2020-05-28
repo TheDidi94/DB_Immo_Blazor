@@ -1,0 +1,66 @@
+﻿@inject NavigationManager NavigationManager
+
+<div class="top-row pl-4 navbar navbar-dark">
+    <img src="/Images/Logo_small.png" asp-append-version="true"
+         style="position:absolute; top:0px; left:0px; width: 249px;" />
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-loop-square" aria-hidden="true"></span> <div class="text-navbar">Home</div>
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" @onclick="HausMieteClick" href="/Haus-Miete">
+                <span class="oi oi-home" aria-hidden="true"></span> <div class="text-navbar">Häuser Miete</div>
+            </NavLink>
+        </li>
+
+        <li class="nav-item px-3">
+            @*<NavLink class="nav-link" href="Haus-Kauf">*@
+            <NavLink class="nav-link" @onclick="HausKaufClick" href="Haus-Kauf">
+                <span class="oi oi-home" aria-hidden="true"></span> <div class="text-navbar">Häuser Kauf</div>
+            </NavLink>
+        </li>
+
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="apartment">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> <div class="text-navbar">Wohnungen</div>
+            </NavLink>
+        </li>
+
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="estate">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> <div class="text-navbar">Grundstücke</div>
+            </NavLink>
+        </li>
+    </ul>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    //Diese 2 Methoden sind ein Workaround. Es funktioniert ansonsten nicht, dass durch die Navbar ein Force-Reload
+    //ausgeführt wird. Sollte laut GitHub bald behoben werden, ist ein Problem in Blazor.
+    private void HausKaufClick()
+    {
+        NavigationManager.NavigateTo("/Haus-Kauf", true);
+    }
+
+    private void HausMieteClick()
+    {
+        NavigationManager.NavigateTo("/Haus-Miete", true);
+    }
+}

@@ -1,0 +1,39 @@
+﻿@page "/Haus-Miete"
+@page "/Haus-Kauf"
+@inject NavigationManager NavigationManager
+
+@using Immobilien.Data
+@using Immobilien.Services
+@using Immobilien.Pages
+@using Immobilien.Pages.Components
+
+@inherits OwningComponentBase<HouseService>
+
+<div class="row">
+    @*Mit Hilfe eines Child-Components wird hier alles angezeigt.*@
+    @foreach (var house in houses)
+    {
+        <IndividualObject house="house"></IndividualObject>
+    }
+</div>
+
+@code {
+
+    List<House> houses;
+    House objHouse = new House();
+
+    protected override void OnInitialized()
+    {
+        houses = Service.GetHouses(getTypeOfObject());
+
+    }
+
+
+        //Zieht den letzten Parameter aus der Uri ("Miete" / "Kauf")
+        //Gibt bei "Kauf" true zurück, bei "Miete" false.
+        private bool getTypeOfObject()
+    {
+        var uri = NavigationManager.Uri;
+        return (uri.Substring(uri.LastIndexOf('-') + 1) == "Kauf") ? true : false;
+    }
+}

@@ -1,0 +1,45 @@
+﻿@using Immobilien.Data
+@* Zeigt ein individuelles Haus an. Aus dieser Komponente wird die Kartenansicht aufgebaut. *@
+
+    <div class="col-2">
+        <div class=" card-background card mb-4" style="background-color: transparent;">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal text-center">
+                    <label style="font-size:18px;color:rgb(255, 0, 102);">@house.Ort: @house.Kurzbeschreibung</label>
+                </h4>
+            </div>
+
+            <img class="card-img-top" style="height:100%;" src="@convertImageToDisplay(house.Titelbild)" alt="@house.Ort" />
+            <div class="card-body card-background" style="background-color:#F7F7F7">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                        <label style="font-size:14px; color:rgb(255, 0, 102); text-decoration: underline;"><b>Kaufpreis: @formatNumber(house.Preis) </b>€</label>
+                    </div>
+                    @*<NavLink href="@($"/details/{product.ProductId}")" class="btn btn-success pull-right btn-outline-info text-white">Details</NavLink>*@
+                    <NavLink class="btn btn-pink pull-right btn-outline-info text-white">Details...</NavLink>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+@code {
+    [Parameter]
+    public House house { get; set; }
+
+    string convertImageToDisplay(byte[] image)
+    {
+        if (image != null)
+        {
+            var base64 = Convert.ToBase64String(image);
+            var finalStr = string.Format("data:image/jpg;base64,{0}", base64);
+            return finalStr;
+        }
+        return "";
+    }
+
+    string formatNumber(double number)
+    {
+        return String.Format("{0:0,0}", number);
+    }
+}
